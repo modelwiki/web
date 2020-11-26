@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+<title>Variables</title>
+<link rel=stylesheet href="https://prosemirror.net/css/editor.css">
+<link rel=stylesheet href="variables.css">
+</head>
+<body>
+  <div id="editor"></div>
+  <div id="content" style="display: none">
+    <p>
+      Dette er en parameter: <input m-variable="1" value="11" type="button" class="m-variable" />. 
+      Dette er et beregnet tal: <input m-variable="2" value="22" type="button" class="m-variable" />. 
+    </p>
+    <p>
+      Prøv at hive i parameteren, og se hvordan det beregnede tal ændrer sig.
+    </p>
+    <p>
+      Klik på parameteren, for at ændre minimum, maximum, osv. Klik på det beregnede tal, for at redigere den bagvedliggende formel.
+    </p>
+    <p>
+      Du kan ændre i dette dokument, og opstille din egen beregning, som du kan dele med andre.
+    </p>
+  </div>
+  <script src="./index.js"></script>
+</body>
+</html>
