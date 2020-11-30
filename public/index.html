@@ -17,7 +17,7 @@
     <script defer src="/__/firebase/8.1.1/firebase-analytics.js"></script>
     <script defer src="/__/firebase/8.1.1/firebase-remote-config.js"></script>
     <script defer src="/__/firebase/8.1.1/firebase-performance.js"></script>
-    <!-- 
+    <!--
       initialize the SDK after all desired features are loaded, set useEmulator to false
       to avoid connecting the SDK to running emulators.
     -->
@@ -31,7 +31,7 @@
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
       #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
       #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      #load, #user { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
       @media (max-width: 600px) {
         body, #message { margin-top: 0; background: white; box-shadow: none; }
         body { border-top: 16px solid #ffa100; }
@@ -41,13 +41,46 @@
   <body>
     <div id="message">
       <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+      <h1>Try this cool login</h1>
+      <p>Email: <input type="text" id="user:email" /></p><a href="javascript:sendSignInLink()">Send login email</a>
+      <a href="javascript:signOut()">Sign out</a>
     </div>
     <p id="load">Firebase SDK Loading&hellip;</p>
+    <p id="user">...</p>
+
 
     <script>
+      // Send login email
+      function sendSignInLink() {
+        var actionCodeSettings = {
+          // URL you want to redirect back to. The domain (www.example.com) for this
+          // URL must be in the authorized domains list in the Firebase Console.
+          url: 'https://klima-187d1.web.app',
+          // This must be true.
+          handleCodeInApp: true,
+          iOS: {
+            bundleId: 'com.example.ios'
+          },
+          android: {
+            packageName: 'com.example.android',
+            installApp: true,
+            minimumVersion: '12'
+          },
+          dynamicLinkDomain: 'modelwiki.page.link'
+        };
+        const email = document.getElementById('user:email').value;
+        firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
+          .then(function() {
+            // The link was successfully sent. Inform the user.
+            // Save the email locally so you don't need to ask the user for it again
+            // if they open the link on the same device.
+            window.localStorage.setItem('emailForSignIn', email);
+          })
+          .catch(function(error) {
+            // Some error occurred, you can inspect the code: error.code
+          });
+      }
+
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
@@ -68,13 +101,13 @@
         try {
           let app = firebase.app();
           let features = [
-            'auth', 
-            'database', 
+            'auth',
+            'database',
             'firestore',
             'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
+            'messaging',
+            'storage',
+            'analytics',
             'remoteConfig',
             'performance',
           ].filter(feature => typeof app[feature] === 'function');
@@ -83,7 +116,58 @@
           console.error(e);
           loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
         }
+
+        firebase.auth().onAuthStateChanged(function(user) {
+          const userEl = document.querySelector('#user');
+          if (user) {
+            userEl.textContent = JSON.stringify(user, null, 2);
+          } else {
+            userEl.textContent = 'no user';
+          }
+        });
+
+
+        // Log user in when returning from email link.
+        // Confirm the link is a sign-in with email link.
+        if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
+          // Additional state parameters can also be passed via URL.
+          // This can be used to continue the user's intended action before triggering
+          // the sign-in operation.
+          // Get the email if available. This should be available if the user completes
+          // the flow on the same device where they started it.
+          var email = window.localStorage.getItem('emailForSignIn');
+          if (!email) {
+            // User opened the link on a different device. To prevent session fixation
+            // attacks, ask the user to provide the associated email again. For example:
+            email = window.prompt('Please provide your email for confirmation');
+          }
+          // The client SDK will parse the code from the link for you.
+          firebase.auth().signInWithEmailLink(email, window.location.href)
+            .then(function(result) {
+              // Clear email from storage.
+              window.localStorage.removeItem('emailForSignIn');
+              // You can access the new user via result.user
+              // Additional user info profile not available via:
+              // result.additionalUserInfo.profile == null
+              // You can check if the user is new or existing:
+              // result.additionalUserInfo.isNewUser
+              window.close();
+            })
+            .catch(function(error) {
+              // Some error occurred, you can inspect the code: error.code
+              // Common errors could be invalid email and invalid or expired OTPs.
+              alert(error);
+            });
+        }
       });
+
+      function signOut() {
+        firebase.auth().signOut().then(function() {
+          // Sign-out successful.
+        }).catch(function(error) {
+         // An error happened.
+        });
+      }
     </script>
   </body>
 </html>
