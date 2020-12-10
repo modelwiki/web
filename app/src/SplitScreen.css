@@ -1,0 +1,23 @@
+.SplitScreen {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+
+.SplitScreen-left {
+  width: 20%;
+}
+
+.SplitScreen-middle {
+  box-sizing: border-box;
+  width: 40%;
+  height: calc(100% - 50px);
+  margin-top: 25px;
+  padding: 25px 25px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.SplitScreen-right {
+  width: 40%;
+}

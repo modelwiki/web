@@ -1,0 +1,17 @@
+.AppLayout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.AppLayout-top {
+  height: 50px;
+  background-color: #00bf9b;
+  z-index: 1;
+  box-shadow: 0 0 0 2px rgba(0, 70, 30, 0.4);
+}
+
+.AppLayout-middle {
+  flex: 1;
+  background-color: #f0f0f0;
+}
