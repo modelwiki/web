@@ -1,10 +1,10 @@
 export type ModelDocumentList = {
-    selectedDocumentIndex: number|null,
-    documents: Array<ModelDocument>
+    readonly selectedDocumentIndex: number|null,
+    readonly documents: Array<ModelDocument>
 };
 
 export type ModelDocument = {
-    richText: any,
-    code: string
+    readonly richText: any,
+    readonly code: string
 };
 
