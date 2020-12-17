@@ -1,6 +1,17 @@
 {
   "rules": {
     ".read": "auth != null",
-    ".write": "auth != null"
+    ".write": "auth != null",
+    "users": {
+      "$uid": {
+        "public": {
+           ".write": "$uid === auth.uid"
+        },
+        "private": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
+    }
   }
 }
