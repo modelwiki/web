@@ -11,7 +11,7 @@
 .SplitScreen-middle {
   box-sizing: border-box;
   width: 40%;
-  height: calc(100% - 50px);
+  height: calc(100% - 60px);
   margin-top: 30px;
   padding: 25px 30px;
   background-color: #ffffff;
