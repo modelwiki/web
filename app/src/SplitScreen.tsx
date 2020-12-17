@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModelDocumentList } from './data/types';
+import RichTextEditor from './RichTextEditor';
 import './SplitScreen.css';
 
 function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (value: ModelDocumentList) => void}) {
@@ -18,7 +19,8 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
           <div>{document.richText}</div>
         )}
       </div>
-      <div className="SplitScreen-middle" contentEditable onInput={event => updateDocument(event.currentTarget.innerHTML)}>
+      <div className="SplitScreen-middle">
+        <RichTextEditor></RichTextEditor>
       </div>
       <div className="SplitScreen-right">
       </div>

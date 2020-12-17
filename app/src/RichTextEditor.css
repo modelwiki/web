@@ -1,0 +1,25 @@
+.RichTextEditor mw-input, .RichTextEditor mw-output {
+  /*cursor: col-resize;*/
+  border: none;
+  outline: none;
+  padding: 0;
+  font: inherit;
+  background: transparent;
+  display: inline-block;
+}
+
+.RichTextEditor mw-input {
+  color: #BA0EA9;
+}
+
+.RichTextEditor mw-output {
+  color: #0e75ba;
+}
+
+.RichTextEditor h1 {
+  margin-top: 0;
+}
+
+.RichTextEditor .ProseMirror {
+  height: 100%;
+}
