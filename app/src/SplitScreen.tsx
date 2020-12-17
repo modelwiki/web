@@ -5,10 +5,11 @@ import './SplitScreen.css';
 
 function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (value: ModelDocumentList) => void}) {
   const updateDocument = React.useCallback((richText: any) => {
-    let i = props.documentList.selectedDocumentIndex;
+    const i = props.documentList.selectedDocumentIndex;
     if(i != null) {
-      let documents = props.documentList.documents.slice();
-      documents[i] = {...documents[i], richText: richText};
+      const title = richText.doc?.content?.[0]?.content?.[0]?.text || "Untitled";
+      const documents = props.documentList.documents.slice();
+      documents[i] = {...documents[i], title: title, richText: richText};
       props.setDocumentList({...props.documentList, documents: documents});
     }
   }, [props.setDocumentList]);
@@ -20,7 +21,7 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
     <div className="SplitScreen">
       <div className="SplitScreen-left">
         {props.documentList.documents.map((document, i) =>
-          <div key={i}>{JSON.stringify(document.richText)}</div>
+          <div key={i}>{document.title}</div>
         )}
       </div>
       <div className="SplitScreen-middle">

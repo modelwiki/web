@@ -4,6 +4,7 @@ export type ModelDocumentList = {
 };
 
 export type ModelDocument = {
+    readonly title: String,
     readonly richText: any,
     readonly code: string
 };
