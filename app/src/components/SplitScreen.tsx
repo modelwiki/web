@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModelDocumentList } from './data/types';
+import { ModelDocumentList } from '../data/types';
 import RichTextEditor from './RichTextEditor';
 import './SplitScreen.css';
 
