@@ -4,14 +4,15 @@ import { ModelDocumentList } from './data/types';
 import SplitScreen from './SplitScreen';
 
 function AppLayout() {
-  let [documentList, setDocumentList] = React.useState<ModelDocumentList>({selectedDocumentIndex: 0, documents: [{richText: "", code: ""}]});
-  console.log(documentList);
+  const documents = [{richText: null, code: ""}, {richText: null, code: ""}, {richText: null, code: ""}];
+  const [documentList, setDocumentList] = React.useState<ModelDocumentList>({selectedDocumentIndex: 0, documents: documents});
+  const setDocumentListCallback = React.useCallback(v => setDocumentList(v), []);
   return (
     <div className="AppLayout">
       <div className="AppLayout-top">
       </div>
       <div className="AppLayout-middle">
-        <SplitScreen documentList={documentList} setDocumentList={v => setDocumentList(v)} />
+        <SplitScreen documentList={documentList} setDocumentList={setDocumentListCallback} />
       </div>
     </div>
   );
