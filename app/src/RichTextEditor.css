@@ -18,21 +18,21 @@
 
 .RichTextEditor h1 {
   margin-top: 0;
-  margin-bottom: 5px;
+  margin-bottom: 12px;
   font-size: 23px;
   font-weight: bold;
 }
 
 .RichTextEditor h2 {
-  margin-top: 0;
-  margin-bottom: 5px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   font-size: 23px;
   font-weight: bold;
 }
 
 .RichTextEditor p {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   font-size: 15px;
 }
 
