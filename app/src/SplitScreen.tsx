@@ -15,8 +15,8 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
   return (
     <div className="SplitScreen">
       <div className="SplitScreen-left">
-        {props.documentList.documents.map(document =>
-          <div>{document.richText}</div>
+        {props.documentList.documents.map((document, i) =>
+          <div key="i">{document.richText}</div>
         )}
       </div>
       <div className="SplitScreen-middle">

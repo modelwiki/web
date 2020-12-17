@@ -8,6 +8,7 @@ import {baseKeymap} from "prosemirror-commands"
 import modelKeymap from "./prosemirror/keymap"
 import modelSchema from "./prosemirror/schema"
 import "./RichTextEditor.css"
+import "prosemirror-view/style/prosemirror.css"
 
 const historyKeymap = keymap({"Mod-z": undo, "Mod-Shift-z": redo, "Mod-y": redo})
 
@@ -31,7 +32,7 @@ function RichTextEditor(props: {}) {
       let editorView = initializeProseMirror(editor, content);
       return () => editorView.destroy()
     }
-  }, [editorElement.current, contentElement.current]);
+  });
   return (
     <div style={{height: "100%"}} className="RichTextEditor">
       <div ref={contentElement}></div>
