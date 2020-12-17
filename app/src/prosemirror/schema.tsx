@@ -28,7 +28,8 @@ let modelSchema = new Schema({
     },
     title: {
       defining: true,
-      content: "inline*",
+      content: "text*",
+      marks: "",
       toDOM() { return ["h1", 0] },
       parseDOM: [{tag: "h1"}]
     },
