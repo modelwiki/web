@@ -12,6 +12,10 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
       props.setDocumentList({...props.documentList, documents: documents});
     }
   }, [props.setDocumentList]);
+  const initialRichText = React.useMemo(() => 
+    props.documentList.selectedDocumentIndex == null ? null : 
+    props.documentList.documents[props.documentList.selectedDocumentIndex].richText
+  , [props.documentList.selectedDocumentIndex]);
   return (
     <div className="SplitScreen">
       <div className="SplitScreen-left">
@@ -20,7 +24,7 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
         )}
       </div>
       <div className="SplitScreen-middle">
-        <RichTextEditor initialRichText={null} onChange={updateDocument} />
+        <RichTextEditor initialRichText={initialRichText} onChange={updateDocument} />
       </div>
       <div className="SplitScreen-right">
       </div>
