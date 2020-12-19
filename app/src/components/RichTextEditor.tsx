@@ -13,11 +13,12 @@ import "prosemirror-view/style/prosemirror.css"
 const historyKeymap = keymap({"Mod-z": undo, "Mod-Shift-z": redo, "Mod-y": redo})
 
 function initializeProseMirror(place: Node, callback: (richText: any) => void, richText: any) {
+  const configuration = {
+    schema: modelSchema,
+    plugins: [modelUpdate(callback), modelKeymap, historyKeymap, keymap(baseKeymap), history()]
+  };
   return new EditorView(place, {
-    state: EditorState.create({
-      schema: modelSchema,
-      plugins: [modelUpdate(callback), modelKeymap, historyKeymap, keymap(baseKeymap), history()]
-    })
+    state: richText == null ? EditorState.create(configuration) : EditorState.fromJSON(configuration, richText)
   })
 }
 
