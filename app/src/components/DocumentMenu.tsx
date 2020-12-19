@@ -8,7 +8,7 @@ function DocumentMenu(props: {documentList: ModelDocumentList, setDocumentList: 
     <div className="DocumentMenu">
       <div className="DocumentMenu-list">
         {props.documentList.documents.map((document, i) => {
-          const selectedClass = i == selectedIndex ? 'DocumentMenu-entry-selected ' : '';
+          const selectedClass = i === selectedIndex ? 'DocumentMenu-entry-selected ' : '';
           return (
             <div 
               key={i} 

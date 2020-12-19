@@ -10,13 +10,12 @@ function AppLayout() {
     {title: "Untitled", richText: null, code: ""}
   ];
   const [documentList, setDocumentList] = React.useState<ModelDocumentList>({selectedDocumentIndex: 0, documents: initialDocuments});
-  const setDocumentListCallback = React.useCallback(v => setDocumentList(v), []);
   return (
     <div className="AppLayout">
       <div className="AppLayout-top">
       </div>
       <div className="AppLayout-middle">
-        <SplitScreen documentList={documentList} setDocumentList={setDocumentListCallback} />
+        <SplitScreen documentList={documentList} setDocumentList={v => setDocumentList(v)} />
       </div>
     </div>
   );

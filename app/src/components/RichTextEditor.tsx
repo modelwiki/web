@@ -21,7 +21,7 @@ function initializeProseMirror(place: Node, callback: (richText: any) => void, r
   })
 }
 
-function RichTextEditor(props: {initialRichText: any, onChange: (richText: any) => void}) {
+function RichTextEditor(props: {selectedIndex: number|null, initialRichText: any, onChange: (richText: any) => void}) {
   const editorElement = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     const editor = editorElement.current;
@@ -29,7 +29,7 @@ function RichTextEditor(props: {initialRichText: any, onChange: (richText: any) 
       const editorView = initializeProseMirror(editor, props.onChange, props.initialRichText);
       return () => editorView.destroy()
     }
-  }, [props.onChange, props.initialRichText]);
+  }, [props.selectedIndex]);
   return (
     <div style={{height: "100%"}} className="RichTextEditor">
       <div ref={editorElement} style={{height: "100%"}}></div>
