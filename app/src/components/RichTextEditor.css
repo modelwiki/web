@@ -41,3 +41,33 @@
   max-height: 100%;
   padding-bottom: 20px;
 }
+
+.RichTextEditor-menu {
+  position: fixed;
+  top: 100px;
+  left: 60%;
+  z-index: 1;
+}
+
+.RichTextEditor-menu-item {
+  background-color: #00bf9b;
+  display: block;
+  margin-left: 1px;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  font-family: serif;
+  font-size: 20px;
+  padding-top: 2px;
+  color: #ffffff;
+  /*box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);*/
+  text-align: center;
+  cursor: pointer;
+}
+
+.RichTextEditor-menu-item:hover {
+  background-color: #10cfab;
+}

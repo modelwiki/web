@@ -7,6 +7,7 @@ import {baseKeymap} from "prosemirror-commands"
 import modelKeymap from "../prosemirror/keymap"
 import modelSchema from "../prosemirror/schema"
 import modelUpdate from "../prosemirror/update"
+import menu from "../prosemirror/menu"
 import "./RichTextEditor.css"
 import "prosemirror-view/style/prosemirror.css"
 
@@ -15,7 +16,7 @@ const historyKeymap = keymap({"Mod-z": undo, "Mod-Shift-z": redo, "Mod-y": redo}
 function initializeProseMirror(place: Node, callback: (richText: any) => void, richText: any) {
   const configuration = {
     schema: modelSchema,
-    plugins: [modelUpdate(callback), modelKeymap, historyKeymap, keymap(baseKeymap), history()]
+    plugins: [menu, modelUpdate(callback), modelKeymap, historyKeymap, keymap(baseKeymap), history()]
   };
   return new EditorView(place, {
     state: richText == null ? EditorState.create(configuration) : EditorState.fromJSON(configuration, richText)
