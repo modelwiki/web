@@ -17,14 +17,14 @@ class MenuView {
       editorView.focus()
       items.forEach(({command, dom}) => {
         if (dom.contains(e.target))
-          command(editorView.state, editorView.dispatch, editorView)
+          command()(editorView.state, editorView.dispatch, editorView)
       })
     })
   }
 
   update() {
     this.items.forEach(({command, dom}) => {
-      let active = command(this.editorView.state, null, this.editorView)
+      let active = command()(this.editorView.state, null, this.editorView)
       dom.className = "RichTextEditor-menu-item " + (active ? "RichTextEditor-menu-item-active " : "")
     })
   }
@@ -54,15 +54,19 @@ function icon(text, name) {
 // Create an icon for a heading at the given level
 function heading(level) {
   return {
-    command: setBlockType(schema.nodes.heading, {level}),
+    command: () => setBlockType(schema.nodes.heading, {level}),
     dom: icon("H" + level, "heading")
   }
 }
 
+function randomId() {
+  return "" + Math.floor(Math.random() * Math.pow(2, 48));
+}
+
 export default menuPlugin([
-  {command: toggleMark(schema.marks.bold), dom: icon("B", "bold")},
-  {command: toggleMark(schema.marks.italic), dom: icon("I", "italic")},
-  {command: setBlockType(schema.nodes.subheading), dom: icon("H", "subheading")},
-  {command: wrapIn(schema.nodes.input), dom: icon("x", "input")},
-  {command: wrapIn(schema.nodes.output), dom: icon("f", "output")},
+  {command: () => toggleMark(schema.marks.bold), dom: icon("B", "bold")},
+  {command: () => toggleMark(schema.marks.italic), dom: icon("I", "italic")},
+  {command: () => setBlockType(schema.nodes.subheading), dom: icon("H", "subheading")},
+  {command: () => toggleMark(schema.marks.input, {variable: randomId()}), dom: icon("x", "input")},
+  {command: () => toggleMark(schema.marks.output, {variable: randomId()}), dom: icon("f", "output")},
 ])

@@ -5,22 +5,6 @@ let modelSchema = new Schema({
     text: {
       group: "inline",
     },
-    input: {
-      inline: true,
-      group: "inline",
-      content: "text*",
-      marks: "",
-      toDOM() { return ["mw-input", 0] },
-      parseDOM: [{tag: "mw-input"}]
-    },
-    output: {
-      inline: true,
-      group: "inline",
-      content: "text*",
-      marks: "",
-      toDOM() { return ["mw-output", 0] },
-      parseDOM: [{tag: "mw-output"}]
-    },
     paragraph: {
       group: "block",
       content: "inline*",
@@ -53,6 +37,18 @@ let modelSchema = new Schema({
     italic: {
       toDOM() { return ["i", 0] },
       parseDOM: [{tag: "i"}]
+    },
+    input: {
+      attrs: {variable: {}},
+      toDOM(node) { return ["mw-input", {"data-variable": node.attrs.variable}, 0] },
+      parseDOM: [{tag: "mw-input", getAttrs(dom) { return {name: dom instanceof HTMLElement ? dom.dataset.variable : false}}}],
+      inclusive: false
+    },
+    output: {
+      attrs: {variable: {}},
+      toDOM(node) { return ["mw-output", {"data-variable": node.attrs.variable}, 0] },
+      parseDOM: [{tag: "mw-output", getAttrs(dom) { return {name: dom instanceof HTMLElement ? dom.dataset.variable : false}}}],
+      inclusive: false
     },
     link: {
       attrs: {href: {}},
