@@ -39,16 +39,16 @@ let modelSchema = new Schema({
       parseDOM: [{tag: "i"}]
     },
     input: {
-      attrs: {variable: {}},
-      toDOM(node) { return ["mw-input", {"data-variable": node.attrs.variable}, 0] },
-      parseDOM: [{tag: "mw-input", getAttrs(dom) { return {variable: dom instanceof HTMLElement ? dom.dataset.variable : false}}}],
-      inclusive: true
+      toDOM(node) { return ["mw-input",  0] },
+      parseDOM: [{tag: "mw-input"}],
+      inclusive: true,
+      excludes: "_"
     },
     output: {
-      attrs: {variable: {}},
-      toDOM(node) { return ["mw-output", {"data-variable": node.attrs.variable}, 0] },
-      parseDOM: [{tag: "mw-output", getAttrs(dom) { return {variable: dom instanceof HTMLElement ? dom.dataset.variable : false}}}],
-      inclusive: true
+      toDOM(node) { return ["mw-output", 0] },
+      parseDOM: [{tag: "mw-output"}],
+      inclusive: true,
+      excludes: "_"
     },
     link: {
       attrs: {href: {}},

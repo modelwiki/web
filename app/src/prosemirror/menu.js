@@ -59,14 +59,10 @@ function heading(level) {
   }
 }
 
-function randomId() {
-  return "" + Math.floor(Math.random() * Math.pow(2, 48));
-}
-
 export default menuPlugin([
   {command: () => toggleMark(schema.marks.bold), dom: icon("B", "bold")},
   {command: () => toggleMark(schema.marks.italic), dom: icon("I", "italic")},
   {command: () => setBlockType(schema.nodes.subheading), dom: icon("H", "subheading")},
-  {command: () => toggleMark(schema.marks.input, {variable: randomId()}), dom: icon("x", "input")},
-  {command: () => toggleMark(schema.marks.output, {variable: randomId()}), dom: icon("f", "output")},
+  {command: () => toggleMark(schema.marks.input), dom: icon("x", "input")},
+  {command: () => toggleMark(schema.marks.output), dom: icon("f", "output")},
 ])
