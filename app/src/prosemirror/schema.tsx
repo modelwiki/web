@@ -5,13 +5,21 @@ let modelSchema = new Schema({
     text: {
       group: "inline",
     },
-    variable: {
+    input: {
       inline: true,
       group: "inline",
       content: "text*",
       marks: "",
-      toDOM() { return ["mw-variable", 0] },
-      parseDOM: [{tag: "mw-variable"}]
+      toDOM() { return ["mw-input", 0] },
+      parseDOM: [{tag: "mw-input"}]
+    },
+    output: {
+      inline: true,
+      group: "inline",
+      content: "text*",
+      marks: "",
+      toDOM() { return ["mw-output", 0] },
+      parseDOM: [{tag: "mw-output"}]
     },
     paragraph: {
       group: "block",

@@ -50,7 +50,8 @@
 }
 
 .RichTextEditor-menu-item {
-  background-color: #00bf9b;
+  background-color: #ffffff;
+  color: #333333;
   display: block;
   margin-left: 1px;
   margin-bottom: 5px;
@@ -62,12 +63,11 @@
   font-family: serif;
   font-size: 20px;
   padding-top: 2px;
-  color: #ffffff;
-  /*box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);*/
   text-align: center;
   cursor: pointer;
 }
 
-.RichTextEditor-menu-item:hover {
-  background-color: #10cfab;
-}
+.RichTextEditor-menu-item.RichTextEditor-menu-item-active {
+  background-color: #00bf9b;
+  color: #ffffff;
+} 

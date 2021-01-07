@@ -1,6 +1,6 @@
 import {Plugin} from "prosemirror-state"
 import {toggleMark, setBlockType, wrapIn} from "prosemirror-commands"
-import {schema} from "prosemirror-schema-basic"
+import schema from "./schema"
 
 class MenuView {
   constructor(items, editorView) {
@@ -25,7 +25,7 @@ class MenuView {
   update() {
     this.items.forEach(({command, dom}) => {
       let active = command(this.editorView.state, null, this.editorView)
-      dom.style.display = active ? "" : "none"
+      dom.className = "RichTextEditor-menu-item " + (active ? "RichTextEditor-menu-item-active " : "")
     })
   }
 
@@ -45,7 +45,7 @@ function menuPlugin(items) {
 // Helper function to create menu icons
 function icon(text, name) {
   let span = document.createElement("span")
-  span.className = "RichTextEditor-menu-item " + name
+  span.className = "RichTextEditor-menu-item "
   span.title = name
   span.textContent = text
   return span
@@ -60,9 +60,9 @@ function heading(level) {
 }
 
 export default menuPlugin([
-  {command: toggleMark(schema.marks.strong), dom: icon("B", "b")},
-  {command: toggleMark(schema.marks.em), dom: icon("I", "i")},
-  //{command: setBlockType(schema.nodes.paragraph), dom: icon("p", "paragraph")},
-  //heading(1), heading(2), heading(3),
-  //{command: wrapIn(schema.nodes.blockquote), dom: icon(">", "blockquote")}
+  {command: toggleMark(schema.marks.bold), dom: icon("B", "bold")},
+  {command: toggleMark(schema.marks.italic), dom: icon("I", "italic")},
+  {command: setBlockType(schema.nodes.subheading), dom: icon("H", "subheading")},
+  {command: wrapIn(schema.nodes.input), dom: icon("x", "input")},
+  {command: wrapIn(schema.nodes.output), dom: icon("f", "output")},
 ])
