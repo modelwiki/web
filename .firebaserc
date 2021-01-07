@@ -1,5 +1,6 @@
 {
   "projects": {
-    "klima": "klima-187d1"
+    "klima": "klima-187d1",
+    "default": "klima-187d1"
   }
 }
