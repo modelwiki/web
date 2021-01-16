@@ -42,9 +42,6 @@ export async function DbStore(userId: string, model: ModelDocument) {
 
 export async function DbList(userId: string): Promise<Array<ModelDocument>> {
     const v = await firebase.database().ref(`users/${userId}/public/models`).get()
-    console.log(`get got ${v} which is ${v.val()}`)
-
-    const stored: [ModelDocumentStored] = await v.val()
-    console.log(`list got ${stored}`)
-    return stored.map((v) => {return {...v, richText: JSON.parse(v.richText)}})
+    const stored: {[key: string]: ModelDocumentStored} = await v.val()
+    return Object.values(stored).map((v) => {return {...v, richText: JSON.parse(v.richText)}})
 }

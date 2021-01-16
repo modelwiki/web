@@ -14,10 +14,12 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
       props.setDocumentList({...props.documentList, documents: documents});
     }
   };
+
   const initialRichText = React.useMemo(() => 
     props.documentList.selectedDocumentIndex == null ? null : 
     props.documentList.documents[props.documentList.selectedDocumentIndex].richText
-  , [props.documentList.selectedDocumentIndex]);
+  , [props.documentList]);
+
   return (
     <div className="SplitScreen">
       <div className="SplitScreen-left">
