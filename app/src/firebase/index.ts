@@ -10,12 +10,24 @@ var config = {
 
 export function FirebaseInit() {
     firebase.initializeApp(config);
+
+    if (window.location.hostname === "localhost") {
+        console.log('Using localhost emulators')
+        firebase.auth().useEmulator('http://localhost:9099/')
+        firebase.database().useEmulator('localhost', 9000)
+    }
 }
 
 export async function Login() {
-    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+    const auth = firebase.auth()
 
-    if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+    if (window.location.hostname === "localhost") {
+        await firebase.auth().signInAnonymously()
+    }
+
+    if (auth.isSignInWithEmailLink(window.location.href)) {
         var email = window.localStorage.getItem('emailForSignIn');
         if (!email) {
             // User opened the link on a different device. To prevent session fixation
@@ -23,7 +35,7 @@ export async function Login() {
             email = window.prompt('Please provide your email for confirmation');
         }
         // The client SDK will parse the code from the link for you.
-        await firebase.auth().signInWithEmailLink(email || '', window.location.href)
+        await auth.signInWithEmailLink(email || '', window.location.href)
         window.localStorage.removeItem('emailForSignIn');
     }
 }
