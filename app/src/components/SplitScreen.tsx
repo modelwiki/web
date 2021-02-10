@@ -2,9 +2,11 @@ import React from 'react';
 import { ModelDocumentList } from '../data/types';
 import DocumentMenu from './DocumentMenu';
 import RichTextEditor from './RichTextEditor';
+import RichTextViewer from './RichTextViewer';
 import './SplitScreen.css';
 
 function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (value: ModelDocumentList) => void}) {
+
   const updateDocument = (richText: any) => {
     const i = props.documentList.selectedDocumentIndex;
     if(i != null) {
@@ -20,15 +22,36 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
     props.documentList.documents[props.documentList.selectedDocumentIndex].richText
   , [props.documentList]);
 
+  const updateCode = (code: string) => {
+    const i = props.documentList.selectedDocumentIndex;
+    if(i != null) {
+      const documents = props.documentList.documents.slice();
+      documents[i] = {...documents[i], code: code};
+      props.setDocumentList({...props.documentList, documents: documents});
+    }
+  };
+
+  const code = React.useMemo(() => 
+    props.documentList.selectedDocumentIndex == null ? "" : 
+    props.documentList.documents[props.documentList.selectedDocumentIndex].code
+  , [props.documentList]);
+
+  const [editing, setEditing] = React.useState(true);
+
   return (
     <div className="SplitScreen">
       <div className="SplitScreen-left">
         <DocumentMenu documentList={props.documentList} setDocumentList={props.setDocumentList} />
       </div>
-      <div className="SplitScreen-middle">
-        <RichTextEditor selectedIndex={props.documentList.selectedDocumentIndex} initialRichText={initialRichText} onChange={updateDocument} />
-      </div>
+      <div className="SplitScreen-middle">{editing
+        ? <RichTextEditor selectedIndex={props.documentList.selectedDocumentIndex} initialRichText={initialRichText} onChange={updateDocument} />
+        : <RichTextViewer richText={initialRichText} code={code} onChangeCode={updateCode} />
+      }</div>
       <div className="SplitScreen-right">
+        <div style={{padding: "100px"}}>
+          <div><label><input type="radio" checked={editing} onChange={_ => setEditing(true)} /> Edit document</label></div>
+          <div><label><input type="radio" checked={!editing} onChange={_ => setEditing(false)} /> Edit code and values</label></div>
+        </div>
       </div>
     </div>
   );
