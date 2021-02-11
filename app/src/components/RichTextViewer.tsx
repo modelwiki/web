@@ -5,11 +5,11 @@ function RichTextViewer(props: {richText: any, code: string, readOnly: boolean, 
 
   const [inputValues, setInputValues] = React.useState(new Map<string, number>());
 
-  let outputValues = new Map<string, number>();
+  let formattedValues = new Map<string, any>();
   try {
     const codeFunction = React.useMemo(() => new Function('inputs', props.code), [props.code]);
     const codeOutputs = codeFunction(Object.fromEntries(inputValues));
-    outputValues = new Map(Object.entries(codeOutputs ?? {}));
+    formattedValues = new Map([...inputValues, ...Object.entries(codeOutputs ?? {})]);
   } catch(e) {
     console.log(e?.message ?? e);
   }
@@ -18,14 +18,13 @@ function RichTextViewer(props: {richText: any, code: string, readOnly: boolean, 
 
     const content = block.content?.map((span: any, spanIndex: number) => {
       if(span.marks?.[0]?.type === 'input') {
-        const value = inputValues.get(span.text) ?? 0;
+        const formatted = formattedValues.get(span.text) ?? "?";
         return <span className="mw-input" key={spanIndex} onClick={_ => {
           setInputValues(new Map([...inputValues, [span.text, parseFloat(Math.random().toFixed(2))]]))
-        }}>{(value * 100).toFixed(0) + "%"}</span>;
+        }}>{"" + formatted}</span>;
       } else if(span.marks?.[0]?.type === 'output') {
-        const value = outputValues.get(span.text);
-        const formatted = value == null ? "?" : (value * 100).toFixed(0) + "%";
-        return <span className="mw-output" key={spanIndex}>{formatted}</span>;
+        const formatted = formattedValues.get(span.text) ?? "?";
+        return <span className="mw-output" key={spanIndex}>{"" + formatted}</span>;
       } else {
         return <span key={spanIndex}>{span.text}</span>;
       }
