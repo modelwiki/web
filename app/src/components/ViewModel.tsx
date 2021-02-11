@@ -23,15 +23,8 @@ function ViewModel() {
       .catch(_ => updateState(s => {return {...s, user}}))
   }, [user, model])
 
-  const initialRichText = React.useMemo(() => 
-    st.initialDocuments.length === 0 ? null : 
-    st.initialDocuments[0].richText
-  , [st.initialDocuments]);
-
-  const code = React.useMemo(() => 
-    st.initialDocuments.length === 0 ? "" : 
-    st.initialDocuments[0].code
-  , [st.initialDocuments]);
+  const initialRichText = st.initialDocuments.length === 0 ? null : st.initialDocuments[0].richText
+  const code = st.initialDocuments.length === 0 ? "" : st.initialDocuments[0].code
 
   if (st.user !== null && st.initialDocuments.length !== 0) {
     return (
