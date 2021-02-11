@@ -1,7 +1,7 @@
 import React from 'react';
 import "./RichTextEditor.css"
 
-function RichTextViewer(props: {richText: any, code: string, onChangeCode: (code: string) => void}) {
+function RichTextViewer(props: {richText: any, code: string, readOnly: boolean, onChangeCode: (code: string) => void}) {
 
   const [inputValues, setInputValues] = React.useState(new Map<string, number>());
 
@@ -39,7 +39,7 @@ function RichTextViewer(props: {richText: any, code: string, onChangeCode: (code
     <div style={{height: "100%"}} className="RichTextEditor">
       <div style={{height: "100%"}}>
         {html}
-        <textarea value={props.code} onChange={e => props.onChangeCode(e.target.value)} style={{marginTop: "100px"}} />
+        <textarea readOnly={props.readOnly} value={props.code} onChange={e => props.onChangeCode(e.target.value)} style={{marginTop: "100px"}} />
       </div>
     </div>
   );

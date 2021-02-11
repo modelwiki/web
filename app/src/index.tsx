@@ -3,14 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import User from './components/User';
+import ViewModel from './components/ViewModel';
 import { FirebaseInit, Login } from './firebase';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 FirebaseInit();
 Login();
 
 ReactDOM.render(
   <React.StrictMode>
-    <User />
+    <Router>
+      <Switch>
+        <Route path="/user/:user/model/:model" children={<ViewModel />}></Route>
+        <Route path="/" children={<User />}></Route>
+      </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root'),
 );
