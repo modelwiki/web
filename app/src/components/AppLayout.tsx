@@ -2,8 +2,9 @@ import React from 'react';
 import './AppLayout.css';
 import { ModelDocument, ModelDocumentList } from '../data/types';
 import firebase from 'firebase';
-import { DbId, DbList, DbStore } from '../firebase'
+import { DbStore } from '../firebase'
 import SplitScreen from './SplitScreen';
+import { Link } from "react-router-dom";
 
 function AppLayout(props: {user: firebase.User, initialDocuments: Array<ModelDocument>}) {
   
@@ -21,6 +22,7 @@ function AppLayout(props: {user: firebase.User, initialDocuments: Array<ModelDoc
     return (
       <div className="AppLayout">
         <div className="AppLayout-top">
+          <Link to={{ pathname: `/user/${props.user.uid}/model/${documentList.documents[documentList.selectedDocumentIndex || 0].id}` }}>model link</Link>
         </div>
         <div className="AppLayout-middle">
           <SplitScreen documentList={documentList} setDocumentList={v => updateState(v)} />
