@@ -8,9 +8,9 @@ import { ModelDocument } from '../data/types';
 
 function User() {
   const initialDocuments = React.useMemo(() => [
-    {title: "Untitled", richText: null, code: "", id: DbId()},
-    {title: "Untitled", richText: null, code: "", id: DbId()},
-    {title: "Untitled", richText: null, code: "", id: DbId()}
+    {title: "Untitled", richText: null, code: "", descriptorCode: "", id: DbId()},
+    {title: "Untitled", richText: null, code: "", descriptorCode: "", id: DbId()},
+    {title: "Untitled", richText: null, code: "", descriptorCode: "", id: DbId()}
   ], [])
 
   const [st, updateState] = React.useState<{user: firebase.User|null, initialDocuments: Array<ModelDocument>}>({user: null, initialDocuments});

@@ -25,16 +25,23 @@ function ViewModel() {
 
   const initialRichText = st.initialDocuments.length === 0 ? null : st.initialDocuments[0].richText
   const code = st.initialDocuments.length === 0 ? "" : st.initialDocuments[0].code
+  const desciptorCode = st.initialDocuments.length === 0 ? "" : st.initialDocuments[0].descriptorCode
 
   if (st.user !== null && st.initialDocuments.length !== 0) {
     return (
-        <div className="AppLayout">
-            <div className="AppLayout-top">
-            </div>
-            <div className="AppLayout-middle">
-                <RichTextViewer readOnly={true} richText={initialRichText} code={code} onChangeCode={() => {}} />
-            </div>
+      <div className="AppLayout">
+        <div className="AppLayout-top">
         </div>
+        <div className="AppLayout-middle">
+          <RichTextViewer 
+            readOnly={true} 
+            richText={initialRichText} 
+            code={code} 
+            descriptorCode={desciptorCode}
+            onChangeCode={() => {}}
+            onChangeDescriptorCode={() => {}} />
+        </div>
+      </div>
     );
   } else {
     return (

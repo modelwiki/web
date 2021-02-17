@@ -9,12 +9,14 @@ export type ModelDocument = {
     readonly id: string | null,
     readonly title: string,
     readonly richText: any,
-    readonly code: string
+    readonly code: string,
+    readonly descriptorCode: string
 };
 
 export type ModelDocumentStored = {
     readonly id: string | null,
     readonly title: string,
     readonly richText: string,
-    readonly code: string
+    readonly code: string,
+    readonly descriptorCode: string
 }

@@ -31,10 +31,22 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
     }
   };
 
-  const code = React.useMemo(() => 
+  const updateDescriptorCode = (code: string) => {
+    const i = props.documentList.selectedDocumentIndex;
+    if(i != null) {
+      const documents = props.documentList.documents.slice();
+      documents[i] = {...documents[i], descriptorCode: code};
+      props.setDocumentList({...props.documentList, documents: documents});
+    }
+  };
+
+  const code =
     props.documentList.selectedDocumentIndex == null ? "" : 
-    props.documentList.documents[props.documentList.selectedDocumentIndex].code
-  , [props.documentList]);
+    props.documentList.documents[props.documentList.selectedDocumentIndex].code;
+
+  const descriptorCode =
+    props.documentList.selectedDocumentIndex == null ? "" : 
+    props.documentList.documents[props.documentList.selectedDocumentIndex].descriptorCode;
 
   const [editing, setEditing] = React.useState(true);
 
@@ -45,7 +57,7 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
       </div>
       <div className="SplitScreen-middle">{editing
         ? <RichTextEditor selectedIndex={props.documentList.selectedDocumentIndex} initialRichText={initialRichText} onChange={updateDocument} />
-        : <RichTextViewer readOnly={false} richText={initialRichText} code={code} onChangeCode={updateCode} />
+        : <RichTextViewer readOnly={false} richText={initialRichText} code={code} descriptorCode={descriptorCode} onChangeCode={updateCode} onChangeDescriptorCode={updateDescriptorCode} />
       }</div>
       <div className="SplitScreen-right">
         <div style={{padding: "100px"}}>
