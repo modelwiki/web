@@ -1,6 +1,8 @@
 import { format } from 'path';
 import React from 'react';
 import "./RichTextEditor.css"
+import {Descriptor} from "../data/types"
+import InputVariable from "./InputVariable"
 
 function RichTextViewer(props: {
   richText: any, 
@@ -48,9 +50,13 @@ function RichTextViewer(props: {
         const descriptor = descriptors.get(span.text) ?? processDescriptor({});
         const value = inputValues.get(span.text) ?? descriptor.defaultValue;
         const text = formatValue(value, descriptor);
-        return <span className="mw-input" key={spanIndex} onClick={_ => {
-          setInputValues(new Map([...inputValues, [span.text, parseFloat(Math.random().toFixed(2))]]))
-        }}>{"" + text}</span>;
+        return <span key={spanIndex}>
+          <InputVariable 
+            value={value} 
+            text={text} 
+            descriptor={descriptor} 
+            onChange={newValue => setInputValues(new Map([...inputValues, [span.text, newValue]]))} />
+        </span>;
       } else if(span.marks?.[0]?.type === 'output') {
         const descriptor = descriptors.get(span.text) ?? processDescriptor({});
         const value = outputValues.get(span.text) ?? descriptor.defaultValue;
@@ -99,15 +105,5 @@ function processDescriptor(o: any): Descriptor {
 function formatValue(value: number, descriptor: Descriptor): string {
   return (descriptor.prefix ?? '') + value + (descriptor.suffix ?? '');
 }
-
-type Descriptor = {
-  defaultValue: number,
-  min: number, 
-  max: number, 
-  step: number, 
-  prefix: string, 
-  suffix: string,
-  thousands: 'comma' | 'si',
-};
 
 export default RichTextViewer;

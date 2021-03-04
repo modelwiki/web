@@ -20,3 +20,13 @@ export type ModelDocumentStored = {
     readonly code: string,
     readonly descriptorCode: string
 }
+
+export type Descriptor = {
+    defaultValue: number,
+    min: number, 
+    max: number, 
+    step: number, 
+    prefix: string, 
+    suffix: string,
+    thousands: 'comma' | 'si',
+};
