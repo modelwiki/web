@@ -20,6 +20,7 @@ function InputVariable(props: {value: number, text: string, descriptor: Descript
     }
   }
 
+  // TODO: Use memo for onMouseMove to make removeEventListener work
   React.useEffect(() => {
     if(sliding) {
         document.addEventListener("mousemove", onMouseMove);
