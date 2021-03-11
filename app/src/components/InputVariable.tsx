@@ -16,7 +16,9 @@ function InputVariable(props: {value: number, text: string, descriptor: Descript
     if(event.buttons !== 1 || sliding === null) {
         setSliding(null);
     } else {
-        props.onChange(sliding.initialValue + (event.pageX - sliding.initialX));
+        const steps = event.pageX - sliding.initialX;
+        const val = sliding.initialValue + props.descriptor.step * steps;
+        props.onChange(Math.max(props.descriptor.min, Math.min(val, props.descriptor.max)));
     }
   }
 

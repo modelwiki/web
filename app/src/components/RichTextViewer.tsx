@@ -103,7 +103,7 @@ function processDescriptor(o: any): Descriptor {
 }
 
 function formatValue(value: number, descriptor: Descriptor): string {
-  return (descriptor.prefix ?? '') + value + (descriptor.suffix ?? '');
+  return (descriptor.prefix ?? '') + parseFloat(value.toFixed(6)) + (descriptor.suffix ?? '');
 }
 
 export default RichTextViewer;
