@@ -29,7 +29,7 @@ function RichTextViewer(props: {
     console.log(e?.message ?? e);
   }
 
-  let outputValues = new Map<string, number>();
+  let outputValues = new Map<string, any>();
   try {
     const codeFunction = React.useMemo(() => new Function('inputs', props.code), [props.code]);
     function process(pair: [string, Descriptor]): [string, number] {
@@ -38,7 +38,7 @@ function RichTextViewer(props: {
     }
     const defaults = Object.entries({...Object.fromEntries(descriptors)}).map(process);
     const codeOutputs = codeFunction({...Object.fromEntries(defaults), ...Object.fromEntries(inputValues)});
-    outputValues = new Map([...Object.entries(codeOutputs ?? {})]) as Map<string, number>;
+    outputValues = new Map([...Object.entries(codeOutputs ?? {})]) as Map<string, any>;
   } catch(e) {
     console.log(e?.message ?? e);
   }
@@ -102,8 +102,14 @@ function processDescriptor(o: any): Descriptor {
   return {defaultValue, min, max, step, prefix, suffix, thousands};
 }
 
-function formatValue(value: number, descriptor: Descriptor): string {
-  return (descriptor.prefix ?? '') + parseFloat(value.toFixed(6)) + (descriptor.suffix ?? '');
+function formatValue(value: any, descriptor: Descriptor): string {
+  const prefix = descriptor.prefix ?? '';
+  const suffix = descriptor.suffix ?? '';
+
+  if (typeof(value) === "number") {
+    return prefix + parseFloat(value.toFixed(6)) + suffix;
+  }
+  return prefix + value + suffix;
 }
 
 export default RichTextViewer;
