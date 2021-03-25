@@ -95,7 +95,7 @@ function processDescriptor(o: any): Descriptor {
   const defaultValue = o.defaultValue ?? 0;
   const min = o.min ?? 0;
   const max = o.max ?? 100;
-  const step = o.step ?? 1;
+  const step = o.step ?? parseFloat(((max - min) / 200).toFixed(1));
   const prefix = o.prefix ?? '';
   const suffix = o.suffix ?? '';
   const thousands = o.thousands || 'comma';
@@ -107,6 +107,7 @@ function formatValue(value: any, descriptor: Descriptor): string {
   const suffix = descriptor.suffix ?? '';
 
   if (typeof(value) === "number") {
+    value -= value % descriptor.step
     return prefix + parseFloat(value.toFixed(6)) + suffix;
   }
   return prefix + value + suffix;

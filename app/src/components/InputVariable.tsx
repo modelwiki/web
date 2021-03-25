@@ -16,9 +16,19 @@ function InputVariable(props: {value: number, text: string, descriptor: Descript
     if(event.buttons !== 1 || sliding === null) {
         setSliding(null);
     } else {
-        const steps = event.pageX - sliding.initialX;
-        const val = sliding.initialValue + props.descriptor.step * steps;
-        props.onChange(Math.max(props.descriptor.min, Math.min(val, props.descriptor.max)));
+        function newValue(initialX: number, initialValue: number, scale: number): number {
+          const steps = (event.pageX - initialX) * scale
+          const val = initialValue + props.descriptor.step * steps
+          return Math.max(props.descriptor.min, Math.min(val, props.descriptor.max))
+        }
+        if (Math.abs(sliding.initialX - event.pageX) < 10) {
+          props.onChange(newValue(sliding.initialX, sliding.initialValue, 1))
+        } else {
+          const range = (props.descriptor.max - props.descriptor.min) / props.descriptor.step + 1
+          const scale = range / 200
+          const scaledValue = newValue(sliding.initialX, sliding.initialValue, scale)
+          props.onChange(scaledValue);
+        }
     }
   }
 
