@@ -63,11 +63,22 @@ function RichTextViewer(props: {
         const text = formatValue(value, descriptor);
         return <span className="mw-output" key={spanIndex}>{"" + text}</span>;
       } else {
-        return <span key={spanIndex}>{span.text}</span>;
+        let wrapper = span.text;
+        span.marks?.forEach((mark: { type: string; attrs: any; }) => {
+          wrapper = 
+            mark?.type == 'bold' ? <b>{wrapper}</b> :
+            mark?.type == 'italic' ? <i>{wrapper}</i> :
+            mark?.type == 'link' ? <a href={mark?.attrs.href} target="_blank" rel="noopener">{wrapper}</a> :
+            wrapper;
+        });
+        return <span key={spanIndex}>{wrapper}</span>;
       }
     }) ?? [];
-
-    return block.type === 'title' ? <h1 key={blockIndex}>{content}</h1> : <p key={blockIndex}>{content}</p>;
+    return (
+      block.type === 'title' ? <h1 key={blockIndex}>{content}</h1> : 
+      content.length == 0 ? <p key={blockIndex}><br /></p> :
+      <p key={blockIndex}>{content}</p>
+    );
 
   });
 
