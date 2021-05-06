@@ -57,7 +57,7 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
       </div>
       <div className="SplitScreen-middle">{editing
         ? <RichTextEditor selectedIndex={props.documentList.selectedDocumentIndex} initialRichText={initialRichText} onChange={updateDocument} />
-        : <RichTextViewer readOnly={false} richText={initialRichText} code={code} descriptorCode={descriptorCode} onChangeCode={updateCode} onChangeDescriptorCode={updateDescriptorCode} />
+        : <RichTextViewer readOnly={false} richText={initialRichText} code={code} showCode={true} descriptorCode={descriptorCode} showDescriptorCode={true} onChangeCode={updateCode} onChangeDescriptorCode={updateDescriptorCode} />
       }</div>
       <div className="SplitScreen-right">
         <div style={{padding: "100px"}}>

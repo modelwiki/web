@@ -37,7 +37,9 @@ function ViewModel() {
             readOnly={true} 
             richText={initialRichText} 
             code={code} 
+            showCode={false}
             descriptorCode={desciptorCode}
+            showDescriptorCode={false}
             onChangeCode={() => {}}
             onChangeDescriptorCode={() => {}} />
         </div>

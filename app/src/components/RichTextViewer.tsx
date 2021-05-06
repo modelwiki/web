@@ -8,12 +8,26 @@ function RichTextViewer(props: {
   richText: any, 
   code: string, 
   descriptorCode: string, 
-  readOnly: boolean, 
+  readOnly: boolean,
+  showCode: boolean,
+  showDescriptorCode: boolean,
   onChangeCode: (code: string) => void,
   onChangeDescriptorCode: (code: string) => void,
 }) {
 
-  const [inputValues, setInputValues] = React.useState(new Map<string, number>());
+  const [state, setState] = React.useState({inputValues: new Map<string, number>(), showCode: props.showCode, showDescriptorCode: props.showDescriptorCode});
+
+  function setInputValues(values: Map<string, number>) {
+    setState((st) => {return {...st, inputValues: values}})
+  }
+
+  function toggleShowCode() {
+    setState((st) => {return {...st, showCode: !state.showCode}})
+  }
+
+  function toggleShowCodeDescriptor() {
+    setState((st) => {return {...st, showDescriptorCode: !state.showDescriptorCode}})
+  }
 
   let descriptors = new Map<string, Descriptor>();
   try {
@@ -37,7 +51,7 @@ function RichTextViewer(props: {
       return [variable, descriptor.defaultValue];
     }
     const defaults = Object.entries({...Object.fromEntries(descriptors)}).map(process);
-    const codeOutputs = codeFunction({...Object.fromEntries(defaults), ...Object.fromEntries(inputValues)});
+    const codeOutputs = codeFunction({...Object.fromEntries(defaults), ...Object.fromEntries(state.inputValues)});
     outputValues = new Map([...Object.entries(codeOutputs ?? {})]) as Map<string, any>;
   } catch(e) {
     console.log(e?.message ?? e);
@@ -48,14 +62,14 @@ function RichTextViewer(props: {
     const content = block.content?.map((span: any, spanIndex: number) => {
       if(span.marks?.[0]?.type === 'input') {
         const descriptor = descriptors.get(span.text) ?? processDescriptor({});
-        const value = inputValues.get(span.text) ?? descriptor.defaultValue;
+        const value = state.inputValues.get(span.text) ?? descriptor.defaultValue;
         const text = formatValue(value, descriptor);
         return <span key={spanIndex}>
           <InputVariable 
             value={value} 
             text={text} 
             descriptor={descriptor} 
-            onChange={newValue => setInputValues(new Map([...inputValues, [span.text, newValue]]))} />
+            onChange={newValue => setInputValues(new Map([...state.inputValues, [span.text, newValue]]))} />
         </span>;
       } else if(span.marks?.[0]?.type === 'output') {
         const descriptor = descriptors.get(span.text) ?? processDescriptor({});
@@ -82,20 +96,27 @@ function RichTextViewer(props: {
 
   });
 
+  const showHideCode = <p onClick={() => toggleShowCode()}><b>{state.showCode ? "Hide code" : "Show code"}</b></p>
+  const showHideCodeDescriptor = <p onClick={() => toggleShowCodeDescriptor()}><b>{state.showDescriptorCode ? "Hide descriptor" : "Show descriptor"}</b></p>
+
   return (
-    <div style={{height: "100%"}} className="RichTextEditor">
-      <div style={{height: "100%"}}>
+    <div style={{marginLeft: "50px", height: "100%"}} className="RichTextEditor">
+      <div style={{height: "100%", marginBottom: "50px"}}>
         {html}
+        <div style={{marginTop: "50px"}}>
+        {showHideCode}
         <textarea 
           readOnly={props.readOnly} 
           value={props.code} 
           onChange={e => props.onChangeCode(e.target.value)} 
-          style={{marginTop: "100px", width: "90%", height: "150px", fontWeight: "bold"}} />
+          style={{marginTop: "0px", width: "90%", height: "150px", fontWeight: "bold", display: state.showCode ? "block" : "none"}} />
+        {showHideCodeDescriptor}
         <textarea 
           readOnly={props.readOnly} 
           value={props.descriptorCode} 
           onChange={e => props.onChangeDescriptorCode(e.target.value)} 
-          style={{marginTop: "50px", width: "90%", height: "150px", fontWeight: "bold"}} />
+          style={{marginTop: "0px", width: "90%", height: "150px", fontWeight: "bold", display: state.showDescriptorCode ? "block" : "none"}} />
+       </div>
       </div>
     </div>
   );
