@@ -58,14 +58,15 @@ function RichTextViewer(props: {
     console.log(e?.message ?? e);
   }
 
-  function dropRightWhile<T>(array: [T], predicate: (item: T) => boolean) {
+  function dropRightWhile<T>(array: Array<T>, predicate: (item: T) => boolean): Array<T> {
     for(let i = array.length - 1; i >= 0; i--) {
+      console.log(predicate(array[i]));
       if(!predicate(array[i])) return array.slice(0, i + 1);
     }
     return [];
   }
 
-  const contentBlocks = dropRightWhile(props.richText.doc.content, (block: any) => block.content?.length == 0); // TODO
+  const contentBlocks = dropRightWhile(props.richText.doc.content, (block: any) => block.content == null || block.content.length == 0);
 
   const html = contentBlocks.map((block: any, blockIndex: number) => {
 
