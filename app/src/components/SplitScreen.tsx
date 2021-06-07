@@ -3,9 +3,10 @@ import { ModelDocumentList } from '../data/types';
 import DocumentMenu from './DocumentMenu';
 import RichTextEditor from './RichTextEditor';
 import RichTextViewer from './RichTextViewer';
+import { Link } from "react-router-dom";
 import './SplitScreen.css';
 
-function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (value: ModelDocumentList) => void}) {
+function SplitScreen(props: {userId: string, documentList: ModelDocumentList, setDocumentList: (value: ModelDocumentList) => void}) {
 
   const updateDocument = (richText: any) => {
     const i = props.documentList.selectedDocumentIndex;
@@ -63,6 +64,10 @@ function SplitScreen(props: {documentList: ModelDocumentList, setDocumentList: (
         <div style={{padding: "100px"}}>
           <div><label><input type="radio" checked={editing} onChange={_ => setEditing(true)} /> Edit document</label></div>
           <div><label><input type="radio" checked={!editing} onChange={_ => setEditing(false)} /> Edit code and values</label></div>
+          <div style={{"height": "20px"}}></div>
+          <Link className="SplitScreen-modellink" target="_blank" to={{ pathname: `/user/${props.userId}/model/${props.documentList.documents[props.documentList.selectedDocumentIndex || 0].id}` }}>
+            Open preview
+          </Link>
         </div>
       </div>
     </div>

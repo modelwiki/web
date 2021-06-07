@@ -1,5 +1,6 @@
 import { format } from 'path';
 import React from 'react';
+import "./RichTextViewer.css"
 import "./RichTextEditor.css"
 import {Descriptor} from "../data/types"
 import InputVariable from "./InputVariable"
@@ -57,7 +58,16 @@ function RichTextViewer(props: {
     console.log(e?.message ?? e);
   }
 
-  const html = props.richText.doc.content.map((block: any, blockIndex: number) => {
+  function dropRightWhile<T>(array: [T], predicate: (item: T) => boolean) {
+    for(let i = array.length - 1; i >= 0; i--) {
+      if(!predicate(array[i])) return array.slice(0, i + 1);
+    }
+    return [];
+  }
+
+  const contentBlocks = dropRightWhile(props.richText.doc.content, (block: any) => block.content?.length == 0); // TODO
+
+  const html = contentBlocks.map((block: any, blockIndex: number) => {
 
     const content = block.content?.map((span: any, spanIndex: number) => {
       if(span.marks?.[0]?.type === 'input') {
@@ -96,27 +106,36 @@ function RichTextViewer(props: {
 
   });
 
-  const showHideCode = <p onClick={() => toggleShowCode()}><b>{state.showCode ? "Hide code" : "Show code"}</b></p>
-  const showHideCodeDescriptor = <p onClick={() => toggleShowCodeDescriptor()}><b>{state.showDescriptorCode ? "Hide descriptor" : "Show descriptor"}</b></p>
+  const showHideCode = <p className="RichTextViewer-toggle" onClick={() => toggleShowCode()}><b>{state.showCode ? "Hide code" : "Show code"}</b></p>
+  const showHideCodeDescriptor = <p className="RichTextViewer-toggle" onClick={() => toggleShowCodeDescriptor()}><b>{state.showDescriptorCode ? "Hide descriptor" : "Show descriptor"}</b></p>
+
+  const modelView = 
+    <div className="RichTextEditor">
+      <div>
+        {html}
+      </div>
+    </div>
 
   return (
-    <div style={{marginLeft: "50px", height: "100%"}} className="RichTextEditor">
-      <div style={{height: "100%", marginBottom: "50px"}}>
-        {html}
-        <div style={{marginTop: "50px"}}>
-        {showHideCode}
-        <textarea 
-          readOnly={props.readOnly} 
-          value={props.code} 
-          onChange={e => props.onChangeCode(e.target.value)} 
-          style={{marginTop: "0px", width: "90%", height: "150px", fontWeight: "bold", display: state.showCode ? "block" : "none"}} />
-        {showHideCodeDescriptor}
-        <textarea 
-          readOnly={props.readOnly} 
-          value={props.descriptorCode} 
-          onChange={e => props.onChangeDescriptorCode(e.target.value)} 
-          style={{marginTop: "0px", width: "90%", height: "150px", fontWeight: "bold", display: state.showDescriptorCode ? "block" : "none"}} />
-       </div>
+    <div className="RichTextViewer-container">
+      <div className="RichTextViewer">
+        <div className="RichTextViewer-document">
+          {modelView}
+        </div>
+        <div style={{ margin: "50px 30px" }}>
+          {showHideCode}
+          <textarea
+            readOnly={props.readOnly}
+            value={props.code}
+            onChange={e => props.onChangeCode(e.target.value)}
+            style={{ marginTop: "0px", width: "90%", height: "150px", fontWeight: "bold", display: state.showCode ? "block" : "none" }} />
+          {showHideCodeDescriptor}
+          <textarea
+            readOnly={props.readOnly}
+            value={props.descriptorCode}
+            onChange={e => props.onChangeDescriptorCode(e.target.value)}
+            style={{ marginTop: "0px", width: "90%", height: "150px", fontWeight: "bold", display: state.showDescriptorCode ? "block" : "none" }} />
+        </div>
       </div>
     </div>
   );

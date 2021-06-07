@@ -1,0 +1,26 @@
+.RichTextViewer-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  position: relative;
+}
+
+.RichTextViewer {
+  width: 600px;
+}
+
+.RichTextViewer-document {
+  margin-top: 30px;
+  padding: 25px 30px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.RichTextViewer-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+.RichTextViewer-toggle:hover {
+  color: #00bf9b;
+}

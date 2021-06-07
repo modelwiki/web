@@ -21,3 +21,20 @@
 .SplitScreen-right {
   width: 40%;
 }
+
+.SplitScreen-modellink {
+  background-color: #00bf9b;
+  color: #ffffff;
+  padding: 5px 15px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.SplitScreen-modellink:hover {
+  background-color: #0dd3af;
+}
+
+.SplitScreen-modellink:active {
+  background-color: #088f76;
+}
