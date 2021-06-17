@@ -16,15 +16,19 @@ class MenuView {
       e.preventDefault()
       editorView.focus()
       items.forEach(({command, dom}) => {
-        if (dom.contains(e.target))
-          command()(editorView.state, editorView.dispatch, editorView)
+        if (dom.contains(e.target)) {
+          const effect = command(true)
+          if (effect) {
+            effect(editorView.state, editorView.dispatch, editorView)
+          }
+        }
       })
     })
   }
 
   update() {
     this.items.forEach(({command, dom}) => {
-      let active = command()(this.editorView.state, null, this.editorView)
+      let active = command(false)(this.editorView.state, null, this.editorView)
       dom.className = "RichTextEditor-menu-item " + (active ? "RichTextEditor-menu-item-active " : "")
     })
   }
@@ -59,10 +63,33 @@ function heading(level) {
   }
 }
 
+function toggleLink(clicked) {
+  function inner(state, dispatch) {
+    let {doc, selection} = state
+    if (selection.empty) return false
+
+    let attrs = null
+
+    if (clicked && !doc.rangeHasMark(selection.from, selection.to, schema.marks.link)) {
+      attrs = {href: prompt("Link to where?", "")}
+      try {
+        new URL(attrs.href)
+      } catch {
+        return false
+      }
+    }
+
+    return toggleMark(schema.marks.link, attrs)(state, dispatch)
+  }
+  return inner
+}
+
+
 export default menuPlugin([
   {command: () => toggleMark(schema.marks.bold), dom: icon("B", "bold")},
   {command: () => toggleMark(schema.marks.italic), dom: icon("I", "italic")},
   {command: () => setBlockType(schema.nodes.subheading), dom: icon("H", "subheading")},
   {command: () => toggleMark(schema.marks.input), dom: icon("x", "input")},
   {command: () => toggleMark(schema.marks.output), dom: icon("f", "output")},
+  {command: (clicked) => toggleLink(clicked), dom: icon("L", "link")},
 ])
