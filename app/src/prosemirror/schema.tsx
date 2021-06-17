@@ -2,6 +2,11 @@ import {Schema} from "prosemirror-model"
 
 let modelSchema = new Schema({
   nodes: {
+    hr: {
+      group: "block",
+      toDOM() { return ["hr", 0] },
+      parseDOM: [{tag: "hr"}]
+    },
     text: {
       group: "inline",
     },

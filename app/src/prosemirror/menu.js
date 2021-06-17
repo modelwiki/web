@@ -1,5 +1,5 @@
 import {Plugin} from "prosemirror-state"
-import {toggleMark, setBlockType, wrapIn} from "prosemirror-commands"
+import {toggleMark, setBlockType, wrapIn, liftEmptyBlock} from "prosemirror-commands"
 import schema from "./schema"
 
 class MenuView {
@@ -84,6 +84,16 @@ function toggleLink(clicked) {
   return inner
 }
 
+function insertSpacer(clicked) {
+  function inner(state, dispatch) {
+    if (clicked) {
+      return dispatch(state.tr.replaceSelectionWith(schema.node("hr")))
+    }
+    return true
+  }
+  return inner
+}
+
 
 export default menuPlugin([
   {command: () => toggleMark(schema.marks.bold), dom: icon("B", "bold")},
@@ -92,4 +102,5 @@ export default menuPlugin([
   {command: () => toggleMark(schema.marks.input), dom: icon("x", "input")},
   {command: () => toggleMark(schema.marks.output), dom: icon("f", "output")},
   {command: (clicked) => toggleLink(clicked), dom: icon("L", "link")},
+  {command: (clicked) => insertSpacer(clicked), dom: icon("-", "spacer")},
 ])
