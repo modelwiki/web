@@ -66,10 +66,7 @@ function RichTextViewer(props: {
     return [];
   }
 
-  const contentBlocks = dropRightWhile(props.richText.doc.content, (block: any) => block.content == null || block.content.length == 0);
-
-  const html = contentBlocks.map((block: any, blockIndex: number) => {
-
+  function renderBlock(block: any, blockIndex: number) {
     const content = block.content?.map((span: any, spanIndex: number) => {
       if(span.marks?.[0]?.type === 'input') {
         const descriptor = descriptors.get(span.text) ?? processDescriptor({});
@@ -87,6 +84,8 @@ function RichTextViewer(props: {
         const value = outputValues.get(span.text) ?? descriptor.defaultValue;
         const text = formatValue(value, descriptor);
         return <span className="mw-output" key={spanIndex}>{"" + text}</span>;
+      } else if (span.type === 'list_item') {
+        return <li>{renderBlocks(span.content)}</li>
       } else {
         let wrapper = span.text;
         span.marks?.forEach((mark: { type: string; attrs: any; }) => {
@@ -99,13 +98,29 @@ function RichTextViewer(props: {
         return <span key={spanIndex}>{wrapper}</span>;
       }
     }) ?? [];
-    return (
-      block.type === 'title' ? <h1 key={blockIndex}>{content}</h1> : 
-      content.length == 0 ? <p key={blockIndex}><br /></p> :
-      <p key={blockIndex}>{content}</p>
-    );
 
-  });
+    switch(block.type) { 
+      case 'ordered_list':
+        return <ol>{content}</ol>
+      case 'bullet_list':
+        return <ul>{content}</ul>
+      case 'list_item':
+        return <li>{content}</li>
+      case 'title':
+        return <h1 key={blockIndex}>{content}</h1>
+      default:
+        return content.length === 0 ? <p key={blockIndex}><br /></p> : <p key={blockIndex}>{content}</p>
+    }
+  }
+
+  function renderBlocks(blocks: any) {
+    return blocks.map(renderBlock)
+  }
+
+  const contentBlocks = dropRightWhile(props.richText.doc.content, (block: any) => block.content == null || block.content.length == 0);
+  console.dir(contentBlocks)
+
+  const html = renderBlocks(contentBlocks);
 
   const showHideCode = <p className="RichTextViewer-toggle" onClick={() => toggleShowCode()}><b>{state.showCode ? "Hide code" : "Show code"}</b></p>
   const showHideCodeDescriptor = <p className="RichTextViewer-toggle" onClick={() => toggleShowCodeDescriptor()}><b>{state.showDescriptorCode ? "Hide descriptor" : "Show descriptor"}</b></p>

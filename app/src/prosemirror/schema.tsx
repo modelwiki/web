@@ -1,6 +1,7 @@
 import {Schema} from "prosemirror-model"
+import { addListNodes } from 'prosemirror-schema-list';
 
-let modelSchema = new Schema({
+let baseSchema = new Schema({
   nodes: {
     hr: {
       group: "block",
@@ -62,6 +63,12 @@ let modelSchema = new Schema({
       inclusive: false
     }
   }
-});
+})
+
+const modelSchema = new Schema({
+  nodes: addListNodes(baseSchema.spec.nodes as any, "paragraph*", "block"),
+  marks: baseSchema.spec.marks
+})
+
 
 export default modelSchema;

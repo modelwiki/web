@@ -1,5 +1,6 @@
 import {Plugin} from "prosemirror-state"
-import {toggleMark, setBlockType, wrapIn, liftEmptyBlock} from "prosemirror-commands"
+import {toggleMark, setBlockType} from "prosemirror-commands"
+import { wrapInList } from 'prosemirror-schema-list';
 import schema from "./schema"
 
 class MenuView {
@@ -101,6 +102,9 @@ export default menuPlugin([
   {command: () => setBlockType(schema.nodes.subheading), dom: icon("H", "subheading")},
   {command: () => toggleMark(schema.marks.input), dom: icon("x", "input")},
   {command: () => toggleMark(schema.marks.output), dom: icon("f", "output")},
-  {command: (clicked) => toggleLink(clicked), dom: icon("L", "link")},
+  {command: (clicked) => toggleLink(clicked), dom: icon("://", "link")},
   {command: (clicked) => insertSpacer(clicked), dom: icon("-", "spacer")},
+  {command: () => wrapInList(schema.nodes.ordered_list), dom: icon("1.", "Wrap in list")},
 ])
+
+export { toggleLink }
