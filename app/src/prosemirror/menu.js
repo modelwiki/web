@@ -95,6 +95,31 @@ function insertSpacer(clicked) {
   return inner
 }
 
+function insertTable(clicked) {
+  function inner(state, dispatch) {
+    if (clicked) {
+      let rowCount = 2
+      let colCount = 2
+
+      const cells = []
+      while (colCount--) {
+        cells.push(schema.nodes.table_cell.createAndFill())
+      }
+      const rows = []
+      while (rowCount--) {
+        rows.push(schema.nodes.table_row.createAndFill(null, cells))
+      }
+
+      const table = schema.nodes.table.createAndFill(null, rows)
+      alert(table)
+      return dispatch(state.tr.replaceSelectionWith(table))
+    } else {
+      return true
+    }
+  }
+  return inner
+}
+
 
 export default menuPlugin([
   {command: () => toggleMark(schema.marks.bold), dom: icon("B", "bold")},
@@ -106,6 +131,7 @@ export default menuPlugin([
   {command: (clicked) => insertSpacer(clicked), dom: icon("-", "spacer")},
   {command: () => wrapInList(schema.nodes.ordered_list), dom: icon("1.", "Wrap in ordered list")},
   {command: () => wrapInList(schema.nodes.bullet_list), dom: icon("*", "Wrap in bullet list")},
+  {command: (clicked) => insertTable(clicked), dom: icon("T", "Insert table")},
 ])
 
 export { toggleLink }

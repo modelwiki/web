@@ -1,5 +1,6 @@
 import {Schema} from "prosemirror-model"
 import { addListNodes } from 'prosemirror-schema-list';
+import { tableNodes } from 'prosemirror-tables';
 
 let baseSchema = new Schema({
   nodes: {
@@ -70,5 +71,10 @@ const modelSchema = new Schema({
   marks: baseSchema.spec.marks
 })
 
+const modelSchema2 = new Schema({
+  nodes: (modelSchema.spec.nodes.append as any)(tableNodes({tableGroup: "block", cellContent: "paragraph*", cellAttributes: {}})),
+  marks: modelSchema.spec.marks
+})
 
-export default modelSchema;
+
+export default modelSchema2;
