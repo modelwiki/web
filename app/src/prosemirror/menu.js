@@ -111,7 +111,6 @@ function insertTable(clicked) {
       }
 
       const table = schema.nodes.table.createAndFill(null, rows)
-      alert(table)
       return dispatch(state.tr.replaceSelectionWith(table))
     } else {
       return true

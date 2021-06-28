@@ -43,6 +43,18 @@
   font-size: 15px;
 }
 
+.RichTextEditor table {
+  width: 100%;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+.RichTextEditor td {
+  border: 1px solid #00bf9b;
+  width: 30px;
+  height: 20px;
+}
+
 .RichTextEditor .ProseMirror {
   padding-left: 3px;
   padding-right: 3px;

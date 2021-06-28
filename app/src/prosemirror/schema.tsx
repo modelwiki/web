@@ -33,7 +33,7 @@ let baseSchema = new Schema({
       parseDOM: [{tag: "h1"}]
     },
     doc: {
-      content: "title block*"
+      content: "title block* hr"
     }
   },
   marks: {
@@ -72,9 +72,12 @@ const modelSchema = new Schema({
 })
 
 const modelSchema2 = new Schema({
-  nodes: (modelSchema.spec.nodes.append as any)(tableNodes({tableGroup: "block", cellContent: "paragraph*", cellAttributes: {}})),
+  nodes: (modelSchema.spec.nodes.append as any)(tableNodes({tableGroup: "block", cellContent: "paragraph+", cellAttributes: {}})),
   marks: modelSchema.spec.marks
 })
 
+// For tables, from: https://github.com/ProseMirror/prosemirror-tables/blob/master/demo.js
+document.execCommand("enableObjectResizing", false, false as any)
+document.execCommand("enableInlineTableEditing", false, false as any)
 
 export default modelSchema2;
