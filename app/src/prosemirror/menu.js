@@ -104,7 +104,8 @@ export default menuPlugin([
   {command: () => toggleMark(schema.marks.output), dom: icon("f", "output")},
   {command: (clicked) => toggleLink(clicked), dom: icon("://", "link")},
   {command: (clicked) => insertSpacer(clicked), dom: icon("-", "spacer")},
-  {command: () => wrapInList(schema.nodes.ordered_list), dom: icon("1.", "Wrap in list")},
+  {command: () => wrapInList(schema.nodes.ordered_list), dom: icon("1.", "Wrap in ordered list")},
+  {command: () => wrapInList(schema.nodes.bullet_list), dom: icon("*", "Wrap in bullet list")},
 ])
 
 export { toggleLink }
